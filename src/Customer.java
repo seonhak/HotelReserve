@@ -18,8 +18,6 @@ public class Customer extends Hotel{
     }
 
     public Boolean logInAccess(String id, String password){
-        System.out.println("/" + this.id + "/" + id + "/");
-        System.out.println("/" + this.password + "/" + password + "/");
         if(id.equals(this.id) && password.equals(this.password)){
             return true;
         }else{
