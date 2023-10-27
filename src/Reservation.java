@@ -54,6 +54,9 @@ public class Reservation {
                 hotel.showRoomList();
                 hotel.selectRoom(sc);
             }
+        }else{
+            hotel.showRoomList();
+            hotel.selectRoom(sc);
         }
     }
     public void cancleReservation(Hotel hotel, Customer customer, Scanner sc){
