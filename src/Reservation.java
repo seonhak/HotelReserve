@@ -1,8 +1,5 @@
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class Reservation {
     private Room room;
@@ -39,5 +36,65 @@ public class Reservation {
         }else{
             hotel.selectRoom(sc);
         }
+    }
+    public void cancleReservation(Hotel hotel, Customer customer, Scanner sc){
+        System.out.println("취소할 번호를 선택해주세요.");
+        int input = sc.nextInt();
+
+        if(input > customer.getReservation().reserved_list.size()){
+            System.out.print("올바른 번호를 입력해주세요. ");
+        }else{
+            customer.getReservation().reserved_list.get(input-1).getRoom().showRoom(input);
+            System.out.println("위 방이 취소됐습니다.");
+            for(int i = 0; i < hotel.getReservation().reserved_list.size(); i ++){
+                if(hotel.getReservation().reserved_list.get(i).getRoom().getName()
+                        == customer.getReservation().reserved_list.get(input-1).getRoom().getName()){
+                    hotel.setAsset(hotel.getAsset() + hotel.getReservation().reserved_list.get(i).getRoom().getPrice());
+                    hotel.getReservation().reserved_list.remove(i);
+                }
+            }
+            customer.setAsset(customer.getAsset() + customer.getReservation().reserved_list.get(input-1).getRoom().getPrice());
+            customer.getReservation().reserved_list.remove(input-1);
+            hotel.start();
+        }
+    }
+
+    public void showReservedList(Hotel hotel, Customer customer, Scanner sc){
+        int input;
+        customer.getReservation().showReservedList(hotel, sc);
+        System.out.println("예약취소를 하시겠습니까?");
+        System.out.println("1.확인 2.취소");
+        while(true){
+            input = sc.nextInt();
+            switch(input){
+                case 1 :
+                    this.cancleReservation(hotel, customer, sc);
+                    break;
+                case 2 :
+                    hotel.start();
+                default:
+                    System.out.println("올바른 번호를 입력해주세요.");
+            }
+        }
+    }
+
+    public void showReservedList(Hotel hotel, Scanner sc){
+        int idx = 1;
+        if(this.reserved_list.size() == 0){
+            System.out.println("예약현황이 없습니다. 처음으로 돌아갑니다.");
+            hotel.start();
+        }
+        for (Reservation reservation : this.reserved_list) {
+            reservation.getRoom().showRoom(idx++);
+        }
+    }
+
+
+    public List getReservedList(){
+        return this.reserved_list;
+    }
+
+    public Room getRoom(){
+        return this.room;
     }
 }
