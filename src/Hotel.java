@@ -100,7 +100,7 @@ public class Hotel {
         this.customer.add(c);
         return;
     }
-    private void showRoomList(){
+    public void showRoomList(){
         System.out.println("====== " + this.name + "의 방 목록 ======");
         int idx = 1;
         for(Room room : room_list){

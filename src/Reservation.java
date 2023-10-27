@@ -9,6 +9,7 @@ public class Reservation {
     private Customer customer;
     private LocalDate now;
     private List<Reservation> reserved_list;
+
     String reservation_id;
 
     public Reservation(){
@@ -30,14 +31,27 @@ public class Reservation {
     public void addReservation(Hotel hotel, Customer customer, int room_number, Scanner sc){
         System.out.println("예약하시겠습니까?");
         System.out.println("1. 예" + "2. 아니오");
+        // 보유자산이 예약할 호텔보다 적을때 && 예약 번호가 할당이 되었을경우
         if (sc.nextInt()==1){
-            System.out.println("방이 예약됐습니다.");
-            ((Room)hotel.getRoomList().get(room_number-1)).showRoom(room_number);
-            this.reserve((Room) hotel.getRoomList().get(room_number-1), customer);
-            customer.getReservation().reserve((Room) hotel.getRoomList().get(room_number-1), customer);
-            hotel.start();
-        }else{
-            hotel.selectRoom(sc);
+            for (Reservation reservation :this.reserved_list){
+                if (reservation.room.getName().equals(((Room)hotel.getRoomList().get(room_number-1)).getName())){
+                    System.out.println("이미 예약된 방입니다.");
+                    hotel.showRoomList();
+                    hotel.selectRoom(sc);
+                }
+            }
+            if (((Room)hotel.getRoomList().get(room_number-1)).getPrice() < customer.getAsset()){
+                System.out.println("방이 예약됐습니다.");
+                ((Room)hotel.getRoomList().get(room_number-1)).showRoom(room_number);
+                this.reserve((Room) hotel.getRoomList().get(room_number-1), customer);
+                customer.getReservation().reserve((Room) hotel.getRoomList().get(room_number-1), customer);
+                customer.setAsset(customer.getAsset() - ((Room) hotel.getRoomList().get(room_number - 1)).getPrice());
+                hotel.start();
+            }else{
+                System.out.println("소지금이 부족합니다.");
+                hotel.showRoomList();
+                hotel.selectRoom(sc);
+            }
         }
     }
 }
