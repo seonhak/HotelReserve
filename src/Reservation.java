@@ -50,8 +50,8 @@ public class Reservation {
             for(int i = 0; i < hotel.getReservation().reserved_list.size(); i ++){
                 if(hotel.getReservation().reserved_list.get(i).getRoom().getName()
                         == customer.getReservation().reserved_list.get(input-1).getRoom().getName()){
-                    hotel.getReservation().reserved_list.remove(i);
                     hotel.setAsset(hotel.getAsset() + hotel.getReservation().reserved_list.get(i).getRoom().getPrice());
+                    hotel.getReservation().reserved_list.remove(i);
                 }
             }
             customer.getReservation().reserved_list.remove(input-1);
