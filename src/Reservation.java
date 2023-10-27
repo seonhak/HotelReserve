@@ -1,10 +1,14 @@
-import java.time.LocalDate;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Reservation {
     private Room room;
     private Customer customer;
-    private LocalDate now;
+    private String reserved_date;
     private List<Reservation> reserved_list;
     String reservation_id;
 
@@ -12,16 +16,17 @@ public class Reservation {
         reserved_list = new ArrayList<>();
     }
 
-    public Reservation(String reservation_id, Room room, Customer customer){
+    public Reservation(String reservation_id, Room room, Customer customer, String reserved_date){
         this.reservation_id = reservation_id;
-        this.now = LocalDate.now();
         this.room = room;
         this.customer = customer;
+        this.reserved_date = reserved_date;
     }
 
     public String reserve(Room room, Customer customer){
         String id = UUID.randomUUID().toString();
-        this.reserved_list.add(new Reservation(id, room, customer));
+        String now = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss+09:00")).toString();
+        this.reserved_list.add(new Reservation(id, room, customer, now));
         return id;
     }
     public void addReservation(Hotel hotel, Customer customer, int room_number, Scanner sc){
@@ -85,6 +90,7 @@ public class Reservation {
             hotel.start();
         }
         for (Reservation reservation : this.reserved_list) {
+            System.out.printf("예약 일시 : " + reservation.reserved_date + " | ");
             reservation.getRoom().showRoom(idx++);
         }
     }
@@ -97,4 +103,5 @@ public class Reservation {
     public Room getRoom(){
         return this.room;
     }
+
 }
