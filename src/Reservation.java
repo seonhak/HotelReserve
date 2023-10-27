@@ -45,7 +45,6 @@ public class Reservation {
             System.out.print("올바른 번호를 입력해주세요. ");
         }else{
             customer.getReservation().reserved_list.get(input-1).getRoom().showRoom(input);
-            customer.setAsset(customer.getAsset() + customer.getReservation().reserved_list.get(input-1).getRoom().getPrice());
             System.out.println("위 방이 취소됐습니다.");
             for(int i = 0; i < hotel.getReservation().reserved_list.size(); i ++){
                 if(hotel.getReservation().reserved_list.get(i).getRoom().getName()
@@ -54,6 +53,7 @@ public class Reservation {
                     hotel.getReservation().reserved_list.remove(i);
                 }
             }
+            customer.setAsset(customer.getAsset() + customer.getReservation().reserved_list.get(input-1).getRoom().getPrice());
             customer.getReservation().reserved_list.remove(input-1);
             hotel.start();
         }
