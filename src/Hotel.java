@@ -35,7 +35,7 @@ public class Hotel {
         System.out.println(reserving_customer.getName() + "님 " + this.name + "에 오신 것을 환영합니다!");
         this.showRoomList();
         while(true){
-            System.out.printf("로그아웃은 0, 예약진행은 1을 입력해주세요:");
+            System.out.printf("1.예약진행 2.예약조회 3.호텔예약현황조회 \n로그아웃을 원하시면 0을 입력해주세요\n");
             input = sc.nextInt();
             switch (input){
                 case 0 :
@@ -45,12 +45,20 @@ public class Hotel {
                     break;
                 case 1 :
                     selectRoom(sc);
+                    break;
+                case 2 :
+                    this.reserving_customer.getReservation().showReservedList(this, this.reserving_customer, sc);
+                    break;
+                case 3 :
+                    this.reservation.showReservedList(this, sc);
+                    break;
                 default :
                     System.out.println("올바른 번호를 입력해주세요");
             }
         }
 
     }
+
     public void selectRoom(Scanner sc){
         System.out.println("예약할 방 번호를 선택해주세요(0을 입력하면 처음으로 돌아갑니다)");
         while(true){
@@ -100,7 +108,7 @@ public class Hotel {
         this.customer.add(c);
         return;
     }
-    private void showRoomList(){
+    public void showRoomList(){
         System.out.println("====== " + this.name + "의 방 목록 ======");
         int idx = 1;
         for(Room room : room_list){
