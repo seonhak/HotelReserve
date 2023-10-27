@@ -1,3 +1,4 @@
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -44,7 +45,7 @@ public class Hotel {
                     start();
                     break;
                 case 1 :
-                    selectRoom(sc);
+                    this.selectRoom(sc);
                     break;
                 case 2 :
                     this.reserving_customer.getReservation().showReservedList(this, this.reserving_customer, sc);
