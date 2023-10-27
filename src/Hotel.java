@@ -29,43 +29,66 @@ public class Hotel {
     public void start(){
         Scanner sc = new Scanner(System.in);
         int input;
-        if(reserving_customer == null){
-            reserving_customer = this.logIn(sc);
+        if(this.reserving_customer == null){
+            this.logIn(sc);
+        }
+        System.out.println(reserving_customer.getName() + "님 " + this.name + "에 오신 것을 환영합니다!");
+        this.showRoomList();
+        while(true){
+            System.out.printf("로그아웃은 0, 예약진행은 1을 입력해주세요:");
+            input = sc.nextInt();
+            switch (input){
+                case 0 :
+                    this.reserving_customer = null;
+                    logIn(sc);
+                    start();
+                    break;
+                case 1 :
+                    selectRoom(sc);
+                default :
+                    System.out.println("올바른 번호를 입력해주세요");
+            }
         }
 
-        System.out.println(reserving_customer.getName() + "님 " + this.name + "에 오신 것을 환영합니다!");
-        input = sc.nextInt();
-        if(input == 0){
-            logIn(sc);
-            start();
+    }
+    public void selectRoom(Scanner sc){
+        System.out.println("예약할 방 번호를 선택해주세요(0을 입력하면 처음으로 돌아갑니다)");
+        while(true){
+            int input = sc.nextInt();
+            if(input > room_list.size()){
+                System.out.println("올바른 번호를 입력해주세요");
+            }else if(input == 0){
+                this.start();
+            }else{
+                this.reservation.addReservation(this, reserving_customer, input, sc);
+            }
         }
-        showRoomList();
     }
 
-    private Customer logIn(Scanner sc){
+    private void logIn(Scanner sc){
         String id, password;
         System.out.printf("아이디를 입력해주세요 : ");
         id = sc.next();
-        System.out.println("입력한 id : " + id);
         System.out.printf("비밀번호를 입력해주세요 : ");
         password = sc.next();
-        System.out.println("입력한 비밀번호 : " + password);
-        System.out.println();
         for(Customer c : this.customer){
             if(c.logInAccess(id, password)){
-                return c;
+                this.reserving_customer = c;
+                return;
             }
         }
         System.out.println("일치하는 회원 정보가 없습니다. 가입을 진행해주세요.");
-        String name, phone_number;
+        this.signUp(sc);
+        return;
+    }
+
+    private void signUp(Scanner sc){
+        String id, password, name, phone_number;
         Double asset;
-        // 회원가입 진행
         System.out.printf("가입하실 아이디를 입력해주세요 : ");
         id = sc.next();
-        System.out.println("입력한 id : " + id);
         System.out.printf("비밀번호를 입력해주세요 : ");
         password = sc.next();
-        System.out.println("입력한 비밀번호 : " + password);
         System.out.printf("이름을 입력해주세요 : ");
         name = sc.next();
         System.out.printf("전화번호를 입력해주세요 ex)010-xxxx-xxxx : ");
@@ -73,8 +96,9 @@ public class Hotel {
         System.out.printf("보유자산을 입력해주세요 : ");
         asset = sc.nextDouble();
         Customer c = new Customer(id, password, name, asset, phone_number);
+        this.reserving_customer = c;
         this.customer.add(c);
-        return c;
+        return;
     }
     private void showRoomList(){
         System.out.println("====== " + this.name + "의 방 목록 ======");
@@ -82,6 +106,7 @@ public class Hotel {
         for(Room room : room_list){
             System.out.println(idx++ + "번 방 : " + room.getName() + " | " + room.getSize() + " | " + room.getPrice());
         }
+        return;
     }
 
 
