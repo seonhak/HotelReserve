@@ -1,4 +1,4 @@
-public class Room {
+public class Room{
     private String name;
     private Double size;
     private Double price;
@@ -36,4 +36,9 @@ public class Room {
     public void setReservated(Boolean reservated){
         this.reservated = reservated;
     }
+    public void showRoom(int input){
+        System.out.println(input + "번 방 : " + this.name + " | " + this.size + " | " + this.price);
+
+    }
+
 }

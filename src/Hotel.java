@@ -108,4 +108,8 @@ public class Hotel {
     public List getCustomer(){
         return this.customer;
     }
+
+    public Customer getReserving_customer() {
+        return this.reserving_customer;
+    }
 }
